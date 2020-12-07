@@ -10,9 +10,24 @@
 # Os código das cores também funcionam para Python, quando 
 # executado no terminal.
 #
+clear
+# ---- VARIÁVEIS ----#
+MENSAGEM_AJUDA="""
+${0}\n\n
+O programa exibe as cores em dois formatos:\n
+\t1 - Cores com fundo colorido\n
+\t2 - Cores com fundo padrão do terminal\n
+\n\tUtilização: $ ${0} [opção]\n
+\t\t-h, --help  - Mostra uma ajuda de como utilizar o programa.\n
+\t\t-cf - Mostra os códigos de cores com fundo.\n
+\t\t-c  - Mostra os códigos de cores sem fundo.\n\n
+
+O programa também pode ser utilizado sem parametros, dessa forma\n
+ele irá mostrar um menu de opções.\n"""
+MENSAGEM_ERRO="\n\033[1;31mOpção inválida!\nUtilize: $ ${0} -h para ajuda.\033[m"
 
 # ---- FUNÇÕES ----#
-function CoresComFundo(){
+function coresComFundo(){
 	clear
 	echo -e "\n"
 	for letras in $(seq 0 7);
@@ -31,7 +46,7 @@ function CoresComFundo(){
 	exit 0
 }
 
-function CoresSemFundo(){
+function coresSemFundo(){
 	clear
 	echo -e "\n"
 	for letras in $(seq 0 7);
@@ -47,24 +62,7 @@ function CoresSemFundo(){
 	exit 0
 }
 
-function Ajuda(){
-	clear
-	echo """
-	O programa exibe as cores em dois formatos:
-		1 - Cores com fundo colorido
-		2 - Cores com fundo padrão do terminal
-	Utilização:
-		$ ${0} [opção]
-		-h, --help  - Mostra uma ajuda de como utilizar o programa.
-		-cf - Mostra os códigos de cores com fundo.
-		-c  - Mostra os códigos de cores sem fundo.
-
-	O programa também pode ser utilizado sem parametros, dessa forma
-	ele irá mostrar um menu de opções.
-	"""
-}
-
-function Menu(){
+function menu(){
 	clear
 	read -n1 -p """
 	Escolha uma opção:
@@ -73,19 +71,23 @@ function Menu(){
 		[ 3 ] - Ajuda
 		Opção: """ opcao
 	case $opcao in
-		1) CoresComFundo ;;
-		2) CoresSemFundo ;;
-		3) Ajuda         ;;
+		1) coresComFundo ;;
+		2) coresSemFundo ;;
+		3) clear && echo -e $MENSAGEM_AJUDA && exit 1 ;;
 	esac
 }
 
 # ---- EXECUÇÃO ----#
-[[ -z $1 ]] && Menu
+[[ -z $1 ]] && menu
 
-clear
-case $1 in
-	 -h | --help) Ajuda;;
-	-cf) CoresComFundo ;;
-	 -c) CoresSemFundo ;;
-	  *) echo -e "\n\033[1;31mOpção inválida!\nUtilize: $ ${0} -h para ajuda." && exit 1 ;;
-esac
+if [[ $1 == "-h" || $1 == "--help" ]]; then
+	echo -e $MENSAGEM_AJUDA
+elif [[ $1 == "-c" ]]; then
+	coresSemFundo
+elif [[ $1 == "-cf" ]]; then
+	coresComFundo
+else
+	echo -e $MENSAGEM_ERRO && exit 1
+fi
+
+exit 0
