@@ -1,0 +1,28 @@
+BCSbackup.sh
+
+Programa que realiza backup e restore de arquivo utilizando tar.
+
+Existe duas formas de executar o programa, forma simples -s e a forma com o dialog -d.
+
+	BCSbackup.sh -[hsd] ou --help
+	-h, --help - Exibe documentação do programa.
+
+	Ex.: BCSbackup.sh -h
+	     BCSbackup.sh --help
+
+Uso forma simples:
+	BCSbackup.sh -s[br] [arquivo]
+
+	-s - Entra no modo simples.
+	-b - Realiza o backup do arquivo.
+	-r - Realiza restore do arquivo.
+
+Para utilizar na forma simples é necessário que esteja no diretório onde o arquivo se
+encontra pois, o mesmo será pegue e compactado na pasta atual.
+
+Uso com dialog:
+	BCSbackup.sh -d
+
+Com essa opção será aberto a caixa do dialog para que você possa escolher o arquivo 
+(diretório ou arquivo) e escolher a pasta de destino onde o arquivo será salvaguardado.
+Na primeira tela do programa você pode escolher entre backup ou restore e seguir cada passo.
